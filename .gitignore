@@ -1,0 +1,10 @@
+*.pt
+**runs**
+*.mp4
+**myenv**
+*.pyc
+*DS_Store*
+**vscode
+*.un~
+*~
+**data

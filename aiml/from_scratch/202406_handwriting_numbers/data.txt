@@ -1,0 +1,3 @@
+www.kaggle.com/datasets/hojjatk/mnist-dataset/
+keras.io/api/datasets/mnist/
+github.com/Bot-Academy/NeuralNetworkFromScratch
