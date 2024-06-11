@@ -7,8 +7,12 @@ import os
 
 # Load the trained model from text files
 
-if os.path.exists("model_weights_i_h.txt") and os.path.exists("model_weights_h_o.txt") and \
-   os.path.exists("model_bias_i_h.txt") and os.path.exists("model_bias_h_o.txt"):
+if os.path.exists("model_weights_i_h1.txt") \
+    and os.path.exists("model_weights_h1_h2.txt") \
+    and os.path.exists("model_weights_h2_o.txt") \
+    and os.path.exists("model_bias_i_h1.txt") \
+    and os.path.exists("model_bias_h1_h2.txt") \
+    and os.path.exists("model_bias_h2_o.txt"):
     # Load the trained model from text files
     print("Loading from existing trained model!")
 else:
@@ -16,10 +20,12 @@ else:
     print("Trained model not found!")
     checkmodelexist()
 
-w_i_h = np.loadtxt("model_weights_i_h.txt")
-w_h_o = np.loadtxt("model_weights_h_o.txt")
-b_i_h = np.loadtxt("model_bias_i_h.txt").reshape(-1, 1)
-b_h_o = np.loadtxt("model_bias_h_o.txt").reshape(-1, 1)
+w_i_h1 = np.loadtxt("model_weights_i_h1.txt")
+w_h1_h2 = np.loadtxt("model_weights_h1_h2.txt")
+w_h2_o = np.loadtxt("model_weights_h2_o.txt")
+b_i_h1 = np.loadtxt("model_bias_i_h1.txt").reshape(-1, 1)
+b_h1_h2 = np.loadtxt("model_bias_h1_h2.txt").reshape(-1, 1)
+b_h2_o = np.loadtxt("model_bias_h2_o.txt").reshape(-1, 1)
 
 images, labels = get_mnist()
 # Show result
@@ -29,11 +35,17 @@ while True:
     plt.imshow(img.reshape(28, 28), cmap="Greys")
 
     img.shape += (1,)
-    # Forward propagation input -> hidden
-    h_pre = b_i_h + w_i_h @ img.reshape(784, 1)
-    h = 1 / (1 + np.exp(-h_pre))
-    # Forward propagation hidden -> output
-    o_pre = b_h_o + w_h_o @ h
+
+    # Forward propagation input -> hidden:
+    h1_pre = b_i_h1 + w_i_h1 @ img.reshape(784, 1)
+    # h1 = 1 / (1 + np.exp(-h1_pre))
+    h1 = np.maximum(0, h1_pre)
+    # Forward propagation hidden1 -> hidden2:
+    h2_pre = b_h1_h2 + w_h1_h2 @ h1
+    # h2 = 1 / (1 + np.exp(-h2_pre))
+    h2 = np.maximum(0, h2_pre)
+    # Forward propagation hidden2 -> output:
+    o_pre = b_h2_o + w_h2_o @ h2
     o = 1 / (1 + np.exp(-o_pre))
 
     plt.title(f"Subscribe if its a {o.argmax()} :)")
