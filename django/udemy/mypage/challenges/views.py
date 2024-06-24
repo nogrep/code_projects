@@ -8,9 +8,8 @@ def index(request):
     return HttpResponse("This works!")
 
 
-def index2(request):
-    return HttpResponse("This works too!")
-
+def monthly_challenge_by_number(request, month):
+    return HttpResponse(month)
 
 def monthly_challenges(request, month):
     challenge_text = None
